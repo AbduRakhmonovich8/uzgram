@@ -27,6 +27,10 @@ export default function App() {
 
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
   }, [tg]);
+  let a = prompt("Ismingizni kiriting:"); 
+  alert("ismingiz: " + a);
+
+   
 
   // Demo contacts (backend bo‘lmasa ham ko‘rsatadi)
   function loadDemoContacts() {
