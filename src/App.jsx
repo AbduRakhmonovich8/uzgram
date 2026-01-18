@@ -1,6 +1,7 @@
+import { useReducer, useRef } from "react";
 import { useEffect, useMemo, useState } from "react";
 
-const API_BASE = "localhost:3001";
+const API_BASE = "127.0.0.1:3001";
 // Agar backend bo‘lsa: "http://localhost:3001" yoki "https://your-backend.com"
 
 function getTg() {
@@ -11,7 +12,7 @@ export default function App() {
   const tg = useMemo(() => getTg(), []);
   const [user, setUser] = useState(null);
   const [status, setStatus] = useState("Initializing...");
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useReducer([]);
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -27,10 +28,10 @@ export default function App() {
 
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
   }, [tg]);
- 
+
   alert("ismingiz: " + tg.initDataUnsafe?.user.toString());
 
-   
+
 
   // Demo contacts (backend bo‘lmasa ham ko‘rsatadi)
   function loadDemoContacts() {
