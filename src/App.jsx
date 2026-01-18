@@ -1,4 +1,3 @@
-import { useReducer, useRef } from "react";
 import { useEffect, useMemo, useState } from "react";
 
 const API_BASE = "127.0.0.1:3001";
@@ -12,7 +11,7 @@ export default function App() {
   const tg = useMemo(() => getTg(), []);
   const [user, setUser] = useState(null);
   const [status, setStatus] = useState("Initializing...");
-  const [contacts, setContacts] = useReducer([]);
+  const [contacts, setContacts] = useState([]);
   const [err, setErr] = useState("");
 
   useEffect(() => {
@@ -25,11 +24,10 @@ export default function App() {
 
     const u = tg.initDataUnsafe?.user || null;
     setUser(u);
+    alert(JSON.stringify(u))
 
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
   }, [tg]);
-
-  alert("ismingiz: " + tg.initDataUnsafe?.user.toString());
 
 
 
