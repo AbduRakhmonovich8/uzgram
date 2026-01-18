@@ -27,8 +27,8 @@ export default function App() {
 
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
   }, [tg]);
-  let a = prompt("Ismingizni kiriting:"); 
-  alert("ismingiz: " + a);
+ 
+  alert("ismingiz: " + tg.initDataUnsafe?.user);
 
    
 
