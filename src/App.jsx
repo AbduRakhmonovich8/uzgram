@@ -35,7 +35,7 @@ export default function App() {
     <AddNumber
       user_id={user?.id}
       fullName={`${user?.first_name || ""} ${user?.last_name || ""}`}
-      useName={user?.username}
+      username={user?.username}
     />
   );
 }
