@@ -32,6 +32,10 @@ export default function App() {
 
 
   return (
-    <AddNumber user_id={tg.id} fullName={(tg.first_name || "" + " " + tg.last_name || "")} useName={tg.username} />
+    <AddNumber
+      user_id={user?.id}
+      fullName={`${user?.first_name || ""} ${user?.last_name || ""}`}
+      useName={user?.username}
+    />
   );
 }
