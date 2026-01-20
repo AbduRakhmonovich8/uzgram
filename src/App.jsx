@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import "dotenv/config";
 import AddNumber from "./camponents/AddNumber";
 
 
@@ -27,6 +26,8 @@ export default function App() {
 
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
   }, [tg]);
+
+  alert(tg)
 
 
 
