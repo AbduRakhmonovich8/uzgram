@@ -27,7 +27,7 @@ export default function App() {
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
   }, [tg]);
 
-  alert(tg)
+  alert(tg.first_name)
 
 
 
