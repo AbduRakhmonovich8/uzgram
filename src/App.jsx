@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import AddNumber from "./camponents/AddNumber";
-
-
+import { getUserById, getActiveNumbers } from "./funktions/forBackend";
 
 function getTg() {
   return window.Telegram?.WebApp || null;
@@ -9,10 +8,10 @@ function getTg() {
 
 export default function App() {
   const tg = useMemo(() => getTg(), []);
+  const [me, setMe] = useState(null);
   const [user, setUser] = useState(null);
+  const [activeNumbers, setActiveNumbers] = useState([]); // massiv sifatida
   const [status, setStatus] = useState("Initializing...");
-  const [contacts, setContacts] = useState([]);
-  const [err, setErr] = useState("");
 
   useEffect(() => {
     if (!tg) {
@@ -22,20 +21,37 @@ export default function App() {
     tg.expand();
     const u = tg.initDataUnsafe?.user || null;
     setUser(u);
-    alert(JSON.stringify(u))
-
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
+
+    (async () => {
+      try {
+        const userData = await getUserById(5672285896); // natija obyekt
+        setMe(userData.data);
+
+        // endi userData.data orqali telefonlarni olish
+        if (userData.data?.setle_phones) {
+          const active = await getActiveNumbers(userData.data.setle_phones);
+          // agar getActiveNumbers massiv qaytarsa, to‘g‘ridan-to‘g‘ri saqlaymiz
+          setStatus(false);
+          setActiveNumbers(active || []);
+        }
+      } catch (err) {
+        console.error("Xatolik:", err);
+        setStatus("Xatolik yuz berdi");
+      }
+    })();
   }, [tg]);
 
-  alert(user?.username)
+  console.log(me);
 
 
 
   return (
-    <AddNumber
-      user_id={user?.id}
-      fullName={`${user?.first_name || ""} ${user?.last_name || ""}`}
-      username={user?.username}
-    />
+    <>
+      {me && !me.isActive && <div style={{ textAlign: "center", marginTop: "50px" }}>🔒 Siz admin orqali faollashtirilishingiz kerak.  {me.username}<br />{me.number || "siz raqamingizni ham botga yuboring sizni raqamingiz bizda mavjudmas"}</div> || !status && me && me?.isActive && <AddNumber
+        activeNumbers={activeNumbers}
+        me={me}// endi to‘g‘ridan-to‘g‘ri massiv
+      />}
+    </>
   );
 }

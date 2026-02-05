@@ -34,7 +34,11 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-
+hr{
+  margin: 2em 0;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
 button {
   border-radius: 8px;
   border: 1px solid transparent;
