@@ -1,7 +1,7 @@
 
 
 export async function getUserById(id) {
-  const res = await fetch(`http://10.208.211.51:4000/getUserByID?user_id=${id}`, {
+  const res = await fetch(`https://aracelis-svelte-mitigatedly.ngrok-free.dev/getUserByID?user_id=${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -16,7 +16,7 @@ export async function getUserById(id) {
 }
 
 export async function getActiveNumbers(numbers) {
-  const res = await fetch("http://10.208.211.51:4000/activeNumbers", {
+  const res = await fetch("https://aracelis-svelte-mitigatedly.ngrok-free.dev/activeNumbers", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
