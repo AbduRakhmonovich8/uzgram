@@ -16,7 +16,7 @@ export async function getUserById(id) {
 }
 
 export async function getActiveNumbers(numbers) {
-  const res = await fetch("http://localhost:4000/activeNumbers", {
+  const res = await fetch("http://10.208.211.51:4000/activeNumbers", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
