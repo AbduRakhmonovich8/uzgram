@@ -1,16 +1,50 @@
 
 
+// export async function getUserById(id) {
+//   // const res = await fetch(`https://aracelis-svelte-mitigatedly.ngrok-free.dev/getUserByID?user_id=${id}`, {
+//   const res = await fetch(`http://localhost:4000/getUserByID?user_id=${id}`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json"
+//     }
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Server xatolik: " + res.status);
+//   }  
+//   const data = await res.json();
+//   return data;
+// }
+
+// export async function getActiveNumbers(numbers) {
+//   // const res = await fetch("https://aracelis-svelte-mitigatedly.ngrok-free.dev/activeNumbers", {
+//   const res = await fetch("http://localhost:4000/activeNumbers", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify({ numbers }) // <-- obyektni stringga aylantirish
+//   });
+
+//   if (!res.ok) {
+//     throw new Error("Server xatolik: " + res.status);
+//   }
+
+//   const data = await res.json();
+//   return data;
+// }
+
 export async function getUserById(id) {
   const res = await fetch(`https://aracelis-svelte-mitigatedly.ngrok-free.dev/getUserByID?user_id=${id}`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json"
-    }
+    headers: { "Accept": "application/json", "ngrok-skip-browser-warning": "true", },
   });
+
+  console.log(await res);
 
   if (!res.ok) {
     throw new Error("Server xatolik: " + res.status);
-  }  
+  }
   const data = await res.json();
   return data;
 }
@@ -19,7 +53,7 @@ export async function getActiveNumbers(numbers) {
   const res = await fetch("https://aracelis-svelte-mitigatedly.ngrok-free.dev/activeNumbers", {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
     },
     body: JSON.stringify({ numbers }) // <-- obyektni stringga aylantirish
   });
