@@ -22,12 +22,11 @@ export default function App() {
     const u = tg.initDataUnsafe?.user || null;
     setUser(u);
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
-    alert(user);
     alert(u);
 
     (async () => {
       try {
-        const userData = await getUserById(u?.id); // natija obyekt || 5672285896
+        const userData = await getUserById(u?.id); // natija obyekt
         setMe(userData.data);
 
         // endi userData.data orqali telefonlarni olish
