@@ -19,7 +19,7 @@ export default function App() {
       return;
     }
     tg.expand();
-    const u = tg.initDataUnsafe?.user || null;
+    const u = window.Telegram?.WebApp ?? null;
     setUser(u);
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
     alert(u);
