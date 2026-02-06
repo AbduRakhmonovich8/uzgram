@@ -2,7 +2,7 @@ import React from 'react'
 
 function AddNumber({ me, activeNumbers }) {
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", margin: "20px auto" }}>
       <h1>UzgramDevAbu</h1>
       <hr />
       <div>Sizning profileingiz: {me?.full_name}</div>
