@@ -27,7 +27,7 @@ export default function App() {
 
     (async () => {
       try {
-        const userData = await getUserById(u?.id || 5672285896); // natija obyekt
+        const userData = await getUserById(u?.id); // natija obyekt || 5672285896
         setMe(userData.data);
 
         // endi userData.data orqali telefonlarni olish
