@@ -2,25 +2,16 @@ import { useEffect, useMemo, useState } from "react";
 import AddNumber from "./camponents/AddNumber";
 import { getUserById, getActiveNumbers } from "./funktions/forBackend";
 
-function getTg() {
-  return window.Telegram?.WebApp || null;
-}
 
 export default function App() {
-  const tg = useMemo(() => getTg(), []);
+  const [tg, setTg] = useState(window.Telegram?.WebApp);
   const [me, setMe] = useState(null);
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [activeNumbers, setActiveNumbers] = useState([]); // massiv sifatida
   const [status, setStatus] = useState("Initializing...");
 
   useEffect(() => {
-    if (!tg) {
-      setStatus("Telegram WebApp topilmadi. Bu app Telegram ichida ochilishi kerak.");
-      return;
-    }
-    tg.expand();
-    const u = window.Telegram?.WebApp ?? null;
-    setUser(u);
+    const u = tg?.initDataUnsafe?.user || null;
     setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
     alert(u);
 
