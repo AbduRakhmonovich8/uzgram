@@ -3,20 +3,25 @@ import AddNumber from "./camponents/AddNumber";
 import { getUserById, getActiveNumbers } from "./funktions/forBackend";
 
 export default function App() {
-  const [tg] = useState(window.Telegram?.WebApp);
+  const [tg] = useState();
   const [me, setMe] = useState(null);
   const [activeNumbers, setActiveNumbers] = useState([]);
   const [status, setStatus] = useState("Initializing...");
 
   useEffect(() => {
-    const u = tg?.initDataUnsafe?.user || null;
+    try {
+      var u = window.Telegram?.WebApp?.initDataUnsafe?.user || null
+    } catch (e) {
+      alert(e.messege)
+    }
     if (!u) {
       setStatus("User topilmadi (initDataUnsafe.user yo‘q)");
       return;
     }
+    alert(u.id)
     setStatus("Logged in (Telegram WebApp)");
     alert(JSON.stringify(u));
-    
+
     (async () => {
       try {
         alert(u.id)
