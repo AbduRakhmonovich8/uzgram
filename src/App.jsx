@@ -1,31 +1,34 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import AddNumber from "./camponents/AddNumber";
 import { getUserById, getActiveNumbers } from "./funktions/forBackend";
 
-
 export default function App() {
-  const [tg, setTg] = useState(window.Telegram?.WebApp);
+  const [tg] = useState(window.Telegram?.WebApp);
   const [me, setMe] = useState(null);
-  // const [user, setUser] = useState(null);
-  const [activeNumbers, setActiveNumbers] = useState([]); // massiv sifatida
+  const [activeNumbers, setActiveNumbers] = useState([]);
   const [status, setStatus] = useState("Initializing...");
 
   useEffect(() => {
     const u = tg?.initDataUnsafe?.user || null;
-    setStatus(u ? "Logged in (Telegram WebApp)" : "User topilmadi (initDataUnsafe.user yo‘q)");
-    alert(u);
+    if (!u) {
+      setStatus("User topilmadi (initDataUnsafe.user yo‘q)");
+      return;
+    }
+    setStatus("Logged in (Telegram WebApp)");
+    alert(JSON.stringify(u));
 
     (async () => {
       try {
-        const userData = await getUserById(u?.id); // natija obyekt
+        const userData = await getUserById(u.id);
         setMe(userData.data);
+        console.log(u);
+        alert(u.id)
+        
 
-        // endi userData.data orqali telefonlarni olish
         if (userData.data?.setle_phones) {
           const active = await getActiveNumbers(userData.data.setle_phones);
-          // agar getActiveNumbers massiv qaytarsa, to‘g‘ridan-to‘g‘ri saqlaymiz
-          setStatus(false);
           setActiveNumbers(active || []);
+          setStatus("Active numbers loaded");
         }
       } catch (err) {
         console.error("Xatolik:", err);
@@ -34,16 +37,25 @@ export default function App() {
     })();
   }, [tg]);
 
-  console.log(me);
-
-
+  console.log({ me, activeNumbers, status });
 
   return (
     <>
-      {me && !me.isActive && <div style={{ textAlign: "center", marginTop: "50px" }}>🔒 Siz admin orqali faollashtirilishingiz kerak.  {me.username}<br />{me.number || "siz raqamingizni ham botga yuboring sizni raqamingiz bizda mavjudmas"}</div> || !status && me && me?.isActive && <AddNumber
-        activeNumbers={activeNumbers}
-        me={me}// endi to‘g‘ridan-to‘g‘ri massiv
-      />}
+      {me && !me.isActive && (
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          🔒 Siz admin orqali faollashtirilishingiz kerak. {me.username}
+          <br />
+          {me.number || "Siz raqamingizni ham botga yuboring, bizda mavjud emas"}
+        </div>
+      )}
+
+      {me && me.isActive && status === "Active numbers loaded" && (
+        <AddNumber
+          activeNumbers={activeNumbers}
+          me={me}
+        />
+      )}
     </>
   );
+
 }
