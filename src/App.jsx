@@ -1,104 +1,75 @@
-import { useMemo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import AddNumber from "./camponents/AddNumber";
+import { getUserById, getActiveNumbers } from "./funktions/forBackend";
 
 export default function App() {
-  const tg = window.Telegram?.WebApp;
-
-  // useMemo orqali foydalanuvchini olish
-  const user = useMemo(() => {
-    return tg?.initDataUnsafe?.user || null;
-  }, [tg]);
-
+  const [me, setMe] = useState(null);
+  const [activeNumbers, setActiveNumbers] = useState([]);
   const [status, setStatus] = useState("Initializing...");
 
+  alert("yangilanish v = 1")
+
   useEffect(() => {
-    if (user) {
-      setStatus(`Logged in (Telegram ID: ${user.id})`);
-      console.log("Telegram ID:", user.id);
-      console.log("Username:", user.username);
-      console.log("First name:", user.first_name);
-      console.log("Last name:", user.last_name);
-    } else {
-      setStatus("User topilmadi (initDataUnsafe.user yo‘q)");
+    const tg = window.Telegram?.WebApp;
+
+    if (!tg) {
+      setStatus("Telegram WebApp topilmadi. App Telegram ichida ochilishi kerak.");
+      return;
     }
-  }, [user]);
+
+    tg.expand();
+
+    const u = tg.initDataUnsafe?.user || null;
+
+    if (!u) {
+      setStatus("Telegram user topilmadi");
+      return;
+    }
+
+    console.log("Telegram user:", u);
+    setStatus("Logged in (Telegram WebApp)");
+
+    (async () => {
+      try {
+        const userData = await getUserById(u.id);
+        setMe(userData.data);
+
+        if (userData.data?.setle_phones?.length) {
+          const active = await getActiveNumbers(userData.data.setle_phones);
+          setActiveNumbers(active || []);
+          setStatus("Active numbers loaded");
+        } else {
+          setStatus("Userda raqamlar mavjud emas");
+        }
+      } catch (err) {
+        console.error("Backend xatolik:", err);
+        setStatus("Server bilan bog‘lanishda xatolik");
+      }
+    })();
+  }, []);
+
+  console.log({ me, activeNumbers, status });
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h3>Status: {status}</h3>
-      {user && (
-        <p>
-          👤 {user.first_name} {user.last_name} <br />
-          🆔 Telegram ID: <b>{user.id}</b> <br />
-          @{user.username || "username mavjud emas"}
-        </p>
+    <>
+      {/* USER FAOL EMAS */}
+      {me && !me.isActive && (
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          🔒 Siz admin tomonidan faollashtirilishingiz kerak
+          <br />
+          Username: {me.username}
+          <br />
+          {me.number || "📵 Telefon raqamingiz botda mavjud emas"}
+        </div>
       )}
-    </div>
+
+      {/* USER FAOL */}
+      {me && me.isActive && status === "Active numbers loaded" && (
+        <AddNumber activeNumbers={activeNumbers} me={me} />
+      )}
+
+      {/* STATUS */}
+      {!me && <p style={{ textAlign: "center" }}>{status}</p>}
+    </>
   );
 }
-
-
-
-
-
-
-
-// import { useEffect, useState } from "react";
-// import AddNumber from "./camponents/AddNumber";
-// import { getUserById, getActiveNumbers } from "./funktions/forBackend";
-
-// export default function App() {
-//   const [tg] = useState();
-//   const [me, setMe] = useState(null);
-//   const [activeNumbers, setActiveNumbers] = useState([]);
-//   const [status, setStatus] = useState("Initializing...");
-
-//   useEffect(() => {
-//     let u
-//     try {
-//       u = window.Telegram?.WebApp?.initDataUnsafe?.user || null;
-//     } catch (e) {
-//       alert(e.messege)
-//     }
-//     setStatus("Logged in (Telegram WebApp)");
-//     alert(JSON.stringify(u));
-
-//     (async () => {
-//       try {
-//         alert(u?.id)
-//         const userData = await getUserById(u.id);
-//         setMe(userData.data);
-//         console.log(u);
-//         if (userData.data?.setle_phones) {
-//           const active = await getActiveNumbers(userData.data.setle_phones);
-//           setActiveNumbers(active || []);
-//           setStatus("Active numbers loaded");
-//         }
-//       } catch (err) {
-//         console.error("Xatolik:", err);
-//         setStatus("Xatolik yuz berdi");
-//       }
-//     })();
-//   }, [tg]);
-
-//   console.log({ me, activeNumbers, status });
-
-//   return (
-//     <>
-//       {me && !me.isActive && (
-//         <div style={{ textAlign: "center", marginTop: "50px" }}>
-//           🔒 Siz admin orqali faollashtirilishingiz kerak. {me.username}
-//           <br />
-//           {me.number || "Siz raqamingizni ham botga yuboring, bizda mavjud emas"}
-//         </div>
-//       )}
-
-//       {me && me.isActive && status === "Active numbers loaded" && (
-//         <AddNumber
-//           activeNumbers={activeNumbers}
-//           me={me}
-//         />
-//       )}
-//     </>
-//   );
-
-// }
