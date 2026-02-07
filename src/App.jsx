@@ -9,7 +9,7 @@ export default function App() {
   const [activeNumbers, setActiveNumbers] = useState([]);
   const [status, setStatus] = useState("Initializing...");
 
-  alert("yangilanish v = 1")
+  alert("yangilanish v = 2")
 
   useEffect(() => {
     WebApp.ready();      // 🔑 muhim
