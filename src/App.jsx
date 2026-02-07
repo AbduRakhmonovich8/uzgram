@@ -16,15 +16,13 @@ export default function App() {
     }
     setStatus("Logged in (Telegram WebApp)");
     alert(JSON.stringify(u));
-
+    
     (async () => {
       try {
+        alert(u.id)
         const userData = await getUserById(u.id);
         setMe(userData.data);
         console.log(u);
-        alert(u.id)
-        
-
         if (userData.data?.setle_phones) {
           const active = await getActiveNumbers(userData.data.setle_phones);
           setActiveNumbers(active || []);
