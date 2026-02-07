@@ -18,7 +18,6 @@ export default function App() {
     const u = WebApp.initDataUnsafe?.user || null;
     if (!u) {
       setStatus("Telegram user topilmadi");
-      return;
     }
 
     console.log("Telegram user:", u);
@@ -26,7 +25,7 @@ export default function App() {
 
     (async () => {
       try {
-        const userData = await getUserById(u.id);
+        const userData = await getUserById(u.id); // u.id
         setMe(userData.data);
 
         if (userData.data?.setle_phones?.length) {
@@ -59,7 +58,7 @@ export default function App() {
       )}
 
       {/* USER FAOL */}
-      {me && me.isActive && status === "Active numbers loaded" && (
+      {me && me.isActive && (
         <AddNumber activeNumbers={activeNumbers} me={me} />
       )}
 

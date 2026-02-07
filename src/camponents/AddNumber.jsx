@@ -5,7 +5,7 @@ function AddNumber({ me, activeNumbers }) {
     <div style={{ textAlign: "center", margin: "20px auto" }}>
       <h1>UzgramDevAbu</h1>
       <hr />
-      <div>Sizning profileingiz: {me?.full_name}</div>
+      <div>Sizning profileingiz: {me?.username}</div>
       <div>Sizning telifon raqamingiz: {me?.number}</div>
       <hr />
       <h2>Faol raqamlar ro'yxati:</h2>
@@ -13,7 +13,7 @@ function AddNumber({ me, activeNumbers }) {
         <div key={index} >
           {number.number} {number.status == "active" ? "✅" : "❌"}
         </div>
-      ))
+      )) || <div>Sizda raqamlar mavjud emas ❌</div>
       }
       <hr />
       <span>Bu menyu orqali siz raqam qoshishingiz mumkin !</span>
