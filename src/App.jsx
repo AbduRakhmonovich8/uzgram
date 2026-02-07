@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
 
 export default function App() {
   const tg = window.Telegram?.WebApp;
 
-  // useMemo orqali foydalanuvchi obyektini olish
+  // useMemo orqali foydalanuvchini olish
   const user = useMemo(() => {
     return tg?.initDataUnsafe?.user || null;
   }, [tg]);
@@ -15,6 +15,8 @@ export default function App() {
       setStatus(`Logged in (Telegram ID: ${user.id})`);
       console.log("Telegram ID:", user.id);
       console.log("Username:", user.username);
+      console.log("First name:", user.first_name);
+      console.log("Last name:", user.last_name);
     } else {
       setStatus("User topilmadi (initDataUnsafe.user yo‘q)");
     }
@@ -33,7 +35,6 @@ export default function App() {
     </div>
   );
 }
-
 
 
 
