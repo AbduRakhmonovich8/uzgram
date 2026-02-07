@@ -24,7 +24,7 @@ function Layout() {
 
     (async () => {
       try {
-        const userData = await getUserById(5672285896); // u.id || 8574151650 || 5672285896
+        const userData = await getUserById(u?.id); // u.id || 8574151650 || 5672285896
         setMe(userData.data);
 
         if (userData.data?.setle_phones?.length) {
