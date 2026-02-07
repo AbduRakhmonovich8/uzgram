@@ -1,42 +1,69 @@
-#root {
-  max-width: 1280px;
+@import "tailwindcss";
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-size: 0.875rem;
+}
+body {
+  background-color: #f0f0f0;
+  padding: 10px;
+}
+.App {
+  max-width: 960px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+nav {
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+nav h1 {
+  margin-right: auto;
+  font-size: 1.3rem;
+  font-weight: 800;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+nav a {
+  color: #333;
+  padding: 10px 10px;
 }
-
+nav p {
+  margin: 0;
+  font-size: small;
+  text-align: right;
+}
+nav .number {
+  color: rgba(0, 0, 0, 0.356);
+  font-size: x-small;
+}
+a {
+  text-decoration: none;
+  padding: 10px 10px;
+  border-bottom: 5px solid #000;
+  font-weight: 700;
+}
+a.active {
+  font-weight: 400;
+  background-color: #00000044;
+  border-bottom: 1px solid #000;
+}
+.gggg,
+li > a {
+  border-bottom: 0px solid #000;
+}
 .card {
-  padding: 2em;
-}
+  margin: 10px 0;
+  font-size: 0.875rem;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #ffffff; /* bg-white */
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06); /* shadow-md */
 
-.read-the-docs {
-  color: #888;
+  border-radius: 0.5rem; /* rounded-lg (8px) */
+}
+main {
+  padding: 0 auto;
 }

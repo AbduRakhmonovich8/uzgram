@@ -1,69 +1,34 @@
-import { useEffect, useState } from "react";
-import AddNumber from "./camponents/AddNumber";
-import { getUserById, getActiveNumbers } from "./funktions/forBackend";
-import WebApp from "@twa-dev/sdk";
+import "./App.css";
+import AddNumber from "./components/AddNumber.jsx";
+import AddMember from "./components/AddMember.jsx";
+import {Layout} from "./Layouts/Layout.jsx";
+import ErrorPage from "./components/ErrorPage.jsx";
 
-export default function App() {
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+function App() {
+  const rout = createBrowserRouter([
+    {
+      path: "/",
+      element: <Layout />,
+      errorElement: <ErrorPage />,
+      children: [
+             {
+          path: "Raqam_Qoshish",
+          element: <AddNumber />
+        },
+        {
+          path: "Odam_Qoshish",
+          element: <AddMember />,
+        },
 
-  const [me, setMe] = useState(null);
-  const [activeNumbers, setActiveNumbers] = useState([]);
-  const [status, setStatus] = useState("Initializing...");
-
-  alert("yangilanish v = 33")
-
-  useEffect(() => {
-    WebApp.ready();      // 🔑 muhim
-    WebApp.expand();
-
-    const u = WebApp.initDataUnsafe?.user || null;
-    if (!u) {
-      setStatus("Telegram user topilmadi");
-    }
-
-    console.log("Telegram user:", u);
-    setStatus("Logged in (Telegram WebApp)");
-
-    (async () => {
-      try {
-        const userData = await getUserById(u.id); // u.id
-        setMe(userData.data);
-
-        if (userData.data?.setle_phones?.length) {
-          const active = await getActiveNumbers(userData.data.setle_phones);
-          setActiveNumbers(active || []);
-          setStatus("Active numbers loaded");
-        } else {
-          setStatus("Userda raqamlar mavjud emas");
-        }
-      } catch (err) {
-        console.error("Backend xatolik:", err);
-        setStatus("Server bilan bog‘lanishda xatolik");
-      }
-    })();
-  }, []);
-
-  console.log({ me, activeNumbers, status });
-
+      ],
+    },
+  ]);
   return (
-    <>
-      {/* USER FAOL EMAS */}
-      {me && !me.isActive && (
-        <div style={{ textAlign: "center", marginTop: "50px" }}>
-          🔒 Siz admin tomonidan faollashtirilishingiz kerak
-          <br />
-          Username: {me.username}
-          <br />
-          {me.number || "📵 Telefon raqamingiz botda mavjud emas"}
-        </div>
-      )}
-
-      {/* USER FAOL */}
-      {me && me.isActive && (
-        <AddNumber activeNumbers={activeNumbers} me={me} />
-      )}
-
-      {/* STATUS */}
-      {!me && <p style={{ textAlign: "center" }}>{status}</p>}
-    </>
+    <div className="App">
+      <RouterProvider router={rout} />
+    </div>
   );
 }
+
+export default App;
