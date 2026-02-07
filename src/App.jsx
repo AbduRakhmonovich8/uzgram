@@ -9,22 +9,18 @@ export default function App() {
   const [status, setStatus] = useState("Initializing...");
 
   useEffect(() => {
+    let u
     try {
-      var u = window.Telegram?.WebApp?.initDataUnsafe?.user || null
+      u = window.Telegram?.WebApp?.initDataUnsafe?.user || null;
     } catch (e) {
       alert(e.messege)
     }
-    if (!u) {
-      setStatus("User topilmadi (initDataUnsafe.user yo‘q)");
-      return;
-    }
-    alert(u.id)
     setStatus("Logged in (Telegram WebApp)");
     alert(JSON.stringify(u));
 
     (async () => {
       try {
-        alert(u.id)
+        alert(u?.id)
         const userData = await getUserById(u.id);
         setMe(userData.data);
         console.log(u);
