@@ -9,6 +9,7 @@ function Layout() {
   const [me, setMe] = useState(null);
   const [activeNumbers, setActiveNumbers] = useState([]);
   const [status, setStatus] = useState("Initializing...");
+  const [tg, setTg] = useState("")
   // alert("yangilanish v = 33")
 
   useEffect(() => {
@@ -16,6 +17,7 @@ function Layout() {
     WebApp.expand();
 
     const u = WebApp.initDataUnsafe?.user || null;
+    setTg(u?.id)
     if (!u) {
       setStatus("Telegram user topilmadi");
     }
@@ -24,7 +26,7 @@ function Layout() {
 
     (async () => {
       try {
-        const userData = await getUserById(u?.id); // u.id || 8574151650 || 5672285896
+        const userData = await getUserById(tg); // u.id || 8574151650 || 5672285896
         setMe(userData.data);
 
         if (userData.data?.setle_phones?.length) {
@@ -40,8 +42,7 @@ function Layout() {
       }
     })();
     console.log(status);
-
-  }, []);
+  }, [tg]);
 
 
   return (
@@ -58,9 +59,8 @@ function Layout() {
             {me?.isActive || "🔒 Siz admin tomonidan faollashtirilishingiz kerak " + me?.username}
             {Boolean(me?.number) || "📵 Telefon raqamingiz botda mavjud emas"}
           </div>
-
         )}
-        <div className="flex rounded-lg overflow-hidden w-[300px] mx-auto mb-4">
+        {!me?.isActive || <div className="flex rounded-lg overflow-hidden w-[300px] mx-auto mb-4">
           <NavLink
             to={"/Raqam_Qoshish"}
             className="w-[50%] self-end bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-5"
@@ -74,13 +74,13 @@ function Layout() {
             Odam qo'shish
           </NavLink>
 
-        </div>
+        </div>}
         {/* USER FAOL */}
         {me && me.isActive && me?.number && (
           <Numbers activeNumbers={activeNumbers} />
         )}
       </header >
-      <main>
+      <main className="card mt-8">
         <Outlet context={{ me, activeNumbers }} />
       </main>
       <footer className="fixed bottom-0 left-0 w-full bg-white text-center py-2 shadow-md">khudoyberduyev &copy;</footer>
