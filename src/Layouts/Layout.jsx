@@ -55,7 +55,7 @@ function Layout() {
   return (
     <>
       <Overlay modal={modal} />
-      <nav className="my-8 mt-30">
+      <nav className="my-8 mt-20">
         <h1>UzgramDevAbu</h1>
         <div><p>{me?.username}</p><p className="number">{me?.number}</p></div><div style={{ backgroundColor: me?.isActive ? "green" : "red", width: "20px", height: "20px", borderRadius: "50%" }}></div>
       </nav>
