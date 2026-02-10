@@ -19,7 +19,7 @@ function Layout() {
     WebApp.expand();
 
     const u = WebApp.initDataUnsafe?.user || null;
-    setTg(u.id)  // u.id || 8574151650 || 5672285896
+    setTg(u?.id)  // u.id || 8574151650 || 5672285896
     if (!u) {
       // setModal({ type: "loader", message: "Iltimos telegram orqali oching" });
     } else {
@@ -55,7 +55,7 @@ function Layout() {
   return (
     <>
       <Overlay modal={modal} />
-      <nav className="my-8">
+      <nav className="my-8 mt-30">
         <h1>UzgramDevAbu</h1>
         <div><p>{me?.username}</p><p className="number">{me?.number}</p></div><div style={{ backgroundColor: me?.isActive ? "green" : "red", width: "20px", height: "20px", borderRadius: "50%" }}></div>
       </nav>
@@ -95,8 +95,6 @@ function Layout() {
         }
 
       </main>
-      <CounterSSE />
-
       <footer className="fixed bottom-0 left-0 w-full bg-white text-center py-2 shadow-md">khudoyberduyev &copy;</footer>
     </>
   );

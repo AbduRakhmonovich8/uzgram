@@ -27,17 +27,6 @@ export async function getActiveNumbers(numbers) {
   return data;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 export async function sendPhone(user_id, phone) {
   try {
     const res = await fetch(
@@ -123,5 +112,24 @@ export async function sendAuth(
   }
 }
 
+export async function getGroupMembers(group, number, index = 1, typegender = "aralash", isoline = "aralash") {
+  if (!(group && group && index && typegender && isoline && number)) return { data: { status: 400, message: "Parametrlar to'lliqmas !" } }
+  console.log(group, index, typegender, isoline, number);
+  
+  const res = await fetch("https://aracelis-svelte-mitigatedly.ngrok-free.dev/getGroupMenmers", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+    },
+    body: JSON.stringify({ group, index, typegender, isoline, number }) // <-- obyektni stringga aylantirish
+  });
+
+  if (!res.ok) {
+    throw new Error("Server xatolik: " + res.status);
+  }
+
+  const data = await res.json();
+  return data;
+}
 
 

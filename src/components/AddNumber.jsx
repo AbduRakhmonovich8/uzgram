@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { data, useOutletContext } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { sendPhone, sendAuth } from "../Functions/forBackend";
 
 function AddNumber() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function CounterWS() {
+export default function CounterWS({setModal}) {
     const [numbers, setNumbers] = useState([]);
 
     useEffect(() => {
@@ -15,16 +15,9 @@ export default function CounterWS() {
 
         return () => ws.close();
     }, []);
-
-    return (
-        <div className="p-4 max-w-md mx-auto">
-            <h2 className="text-xl font-semibold mb-2">Realtime Count</h2>
-            <ul className="list-disc pl-5 space-y-1">
-                <p>
-                    {numbers.map((n) => (
-                        n + "+"
-                    ))}</p>
-            </ul>
-        </div>
-    );
+    useEffect(()=>{
+        numbers.map(e => {
+            setModal({ type: "note", message: e })
+        })
+    },[numbers])
 }
