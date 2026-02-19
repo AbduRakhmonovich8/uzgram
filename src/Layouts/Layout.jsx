@@ -18,7 +18,7 @@ function Layout() {
     WebApp.expand();
 
     const u = WebApp.initDataUnsafe?.user || null;
-    setTg(8574151650)  // u.id || 8574151650 || 5672285896
+    setTg(u.id)  // u.id || 8574151650 || 5672285896
     if (!u) {
       // setModal({ type: "loader", message: "Iltimos telegram orqali oching" });
     } else {
