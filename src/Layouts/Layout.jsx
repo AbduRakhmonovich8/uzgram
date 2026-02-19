@@ -31,7 +31,7 @@ function Layout() {
         userData?.data && setModal({ type: null, messege: "" })
 
         if (userData.data?.setle_phones?.length) {
-          const active = await getActiveNumbers(userData.data.setle_phones);        
+          const active = await getActiveNumbers(userData.data.setle_phones);
           setActiveNumbers(active || []);
         } else {
           console.log("Userda raqamlar mavjud emas");
@@ -55,7 +55,7 @@ function Layout() {
 
 
   console.log(activeNumbers);
-  
+
 
 
   return (
@@ -76,7 +76,7 @@ function Layout() {
         )}
         {/* USER FAOL */}
         {me && me.isActive && me?.number && (
-          <Numbers activeNumbers={activeNumbers} />
+          <Numbers activeNumbers={activeNumbers} setActiveNumbers={setActiveNumbers} me={me} setModal={setModal} />
         )}
         {!me?.isActive || <div className="flex rounded-lg overflow-hidden w-75 mx-auto mb-4">
           <NavLink

@@ -134,25 +134,39 @@ export async function getGroupMembers(group, number, index = 1, typegender = "ar
   return data;
 }
 
-export async function addUserToGroup(group, user_id, session_string, step) {
-  // if (!(group && group && index && typegender && isoline && number)) return { data: { status: 400, message: "Parametrlar to'lliqmas !" } }
-  // console.log(group, index, typegender, isoline, number);
+export async function addUserToGroup(group, user_id, access_hash, session_string, name, uname) {
+  if (!(group && user_id && access_hash && session_string && name)) return { data: { status: 400, message: "Parametrlar to'lliqmas !" } }
+  console.log({ group, user_id, access_hash, session_string, stop, name });
+  const res = await fetch(serverUrl + "/addUserToGroup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+    },
+    body: JSON.stringify({ group, user_id, access_hash, session_string, name, uname }) // <-- obyektni stringga aylantirish
+  });
 
-  // const res = await fetch(serverUrl + "/getGroupMenmers", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
-  //   },
-  //   body: JSON.stringify({ group, index, typegender, isoline, number }) // <-- obyektni stringga aylantirish
-  // });
+  if (!res.ok) {
+    throw new Error("Server xatolik: " + res.status);
+  }
 
-  // if (!res.ok) {
-  //   throw new Error("Server xatolik: " + res.status);
-  // }
-
-  // const data = await res.json();
-  // return data;
+  const data = await res.json();
+  return data;
 }
+export async function deleteNumber(user_id, number) {
+  const res = await fetch(serverUrl + "/deleteNumber", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json", "ngrok-skip-browser-warning": "true"
+    },
+    body: JSON.stringify({ user_id, number }) // <-- obyektni stringga aylantirish
+  });
+  if (!res.ok) {
+    throw new Error("Server xatolik: " + res.status);
+  }
+  const data = await res.json();
+  return data;
+}
+
 
 
 

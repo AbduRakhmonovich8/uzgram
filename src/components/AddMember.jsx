@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router-dom";
-import { getGroupMembers } from "../Functions/forBackend.js"
+import { getGroupMembers, addUserToGroup } from "../Functions/forBackend.js"
 function AddMember() {
 
-  const { setModal, activeNumbers, modal, me } = useOutletContext();
+  const { setModal, activeNumbers, modal } = useOutletContext();
   const [activeraqamlar1, setActiveRaqamlar] = useState(activeNumbers?.data);
+  const [activeCurrentNumbers, setActiveCurrentNumbers] = useState([])
   const [addedUser, setAddedUser] = useState([]);
+
 
   useEffect(() => {
     setActiveRaqamlar(activeNumbers?.data)
@@ -42,10 +44,21 @@ function AddMember() {
   // birinchi renderda captcha chiqsin
   useEffect(() => {
     newCaptcha();
-  }, []);
+    let arr = []
+    if (activeraqamlar1) {
+      for (const element of activeraqamlar1) {
+        if (element.status == "active") {
+          arr.push(element?.session_sring); // e'tibor: string yozilishi
+        }
+      }
+      setActiveCurrentNumbers(arr)
+    }
+  }, [activeraqamlar1]);
+
+
+
   useEffect(() => {
     if (modal.type == "loader") {
-      console.log("true");
       setModal({ type: null, message: "sdfhsdjfksdf" })
     }
     console.log("members ozgardi");
@@ -57,19 +70,6 @@ function AddMember() {
         setStep(1);
       }
     }
-    // if (members?.data.step == 1) {
-    //   if (auth2.data.status != 200) {
-    //     setModal({ type: "note", message: auth2?.data.message })
-    //   } else {
-    //     setStep(2)
-    //     h2Ref.current.innerText = phoneRef.current.value + "\nMuvaffaqiyatli qo‘shildi";
-    //   }
-    // }
-
-
-
-
-
   }, [members]);
 
   // 1-FORM SUBMIT (PHONE + CAPTCHA)
@@ -103,58 +103,67 @@ function AddMember() {
 
 
   // 2-FORM SUBMIT (CODE + 2FA)
+  const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+
   async function handleSubmit2(e) {
     e.preventDefault();
 
     const group1 = groupRef1.current.value || "";
-    const perAccaunt = perAccauntRef.current.value || "";
+    const maxnumber = Number(perAccauntRef.current.value || 0);
 
-    setStep(2)
-    console.log("clicked");
+    if (!members?.data?.length) return;
+    if (!activeCurrentNumbers?.length) return;
 
-    // if (group1 && perAccaunt) {
+    const baseDelay = activeCurrentNumbers.length > 1 ? 3000 : 6000;
 
-    // }
+    setStep(2);
 
+    const alreadyAddedCount = addedUser.filter(x => x?.added === true).length;
+    const canAdd = Math.max(0, maxnumber - alreadyAddedCount);
 
-    // if (auth?.data?.step == 0) {
-    //   try {
-    //     setAuth2(await sendAuth(
-    //       me?.user_id,
+    const list = members.data.slice(0, canAdd);
 
-    //       code,
-    //       auth?.data?.phoneCodeHash,
-    //       auth?.data?.sessionString,members     twstep    //     ));
-    //   } catch (e) {
-    //     console.log("Server bilan xatolik" + e.message);
-    //   }
-    // } else {
-    //   setTimeout(() => {
-    //     alert("Qaytadan boshlash")
-    //   }, 2500);
-    // }
+    for (let i = 0; i < list.length; i++) {
+      const value = list[i];
+      const session = activeCurrentNumbers[i % activeCurrentNumbers.length];
+
+      const answare = await addUserToGroup(
+        group1,
+        value.user_id,
+        value.accessHash,
+        session,
+        value.firstname,
+        value.user_name
+      );
+
+      // faqat qo‘shilgan bo‘lsa counted bo‘ladi (backend added=true/false)
+      setAddedUser(prev => [...prev, answare]);
+
+      setModal({ type: "note", message: `${answare.name}: ${answare.message}`})
+      // FloodWait bo‘lsa — shuni kutamiz
+      if (answare?.reason === "flood_wait" && answare?.wait_seconds) {
+        await sleep((answare.wait_seconds + 2) * 10000);
+        continue;
+      }
+
+      await sleep(baseDelay);
+    }
   }
-  //3 - final new handle
-  function newForm() {
-    // phoneRef.current.value = ""
-    // codeRef.current.value = ""
-    // twoFaRef.current.value = ""
-    // h2Ref.current.value = ""
-    // setStep(0)
-    // setAuth(null)
-    // setAuth2(null)
-    // newCaptcha();
-  }
+  console.log(addedUser);
 
-  const filtered = members?.data
-    ? members.data.filter(e => e.user_name)
-    : [];
 
-  console.log(filtered);
-  console.log(members);
+  // const filtered = members?.data
+  //   ? members.data.filter(e => e.user_name)
+  //   : [];
 
-  console.log(me);
-  
+  // console.log(filtered);
+  // console.log(members);
+  // console.log(me);
+  // console.log(activeCurrentNumbers);
+
+
+
+
 
 
   return (
@@ -251,11 +260,11 @@ function AddMember() {
                 defaultValue="1"
                 className="w-full border rounded-md px-3 py-2 outline-none"
               >
-                <option value="1">1 – 1000</option>
-                <option value="2">1001 – 2000</option>
-                <option value="3">2001 – 3000</option>
-                <option value="4">3001 – 4000</option>
-                <option value="5">4001 – 5000</option>
+                <option value="1">1 – 100</option>
+                <option value="2">101 – 200</option>
+                <option value="3">201 – 300</option>
+                <option value="4">301 – 400</option>
+                <option value="5">401 – 500</option>
               </select>
               <p className="text-xs text-gray-500 mt-1">
                 Index = page. Masalan 2 tanlansa 1000 dan keyingi 1000 ta user olinadi.
@@ -334,6 +343,7 @@ function AddMember() {
               </svg>
             </div>
             <h2 className="text-lg font-semibold">A`zolar muvofaqiyatli olindi</h2>
+            <p>{activeCurrentNumbers?.length * 45} tagacha a'zo qoshishingiz mumkin !</p>
 
             {/* MESSAGE */}
             <div>
@@ -355,9 +365,9 @@ function AddMember() {
                 title="Telegram guruh linki"
                 type="number"
                 required
-                max={40}
+                max={activeCurrentNumbers.length * 45}
                 min={1}
-                placeholder="1 < x < 40 "
+                placeholder={"1 < x < " + activeCurrentNumbers.length * 45}
                 className="w-full border rounded-md px-3 py-2 outline-none"
               />
             </div>
