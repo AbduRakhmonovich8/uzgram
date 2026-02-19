@@ -1,4 +1,4 @@
-const serverUrl = "https://aracelis-svelte-mitigatedly.ngrok-free.dev"
+const serverUrl = "https://uzgram-backend.onrender.com"
 
 export async function getUserById(id) {
   const res = await fetch(serverUrl + `/getUserByID?user_id=${id}`, {
