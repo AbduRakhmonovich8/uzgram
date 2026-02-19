@@ -5,7 +5,6 @@ import Numbers from "../components/Numbers";
 import { getUserById, getActiveNumbers } from "../Functions/forBackend";
 import WebApp from "@twa-dev/sdk";
 import Overlay from "../components/Overlay";
-import CounterSSE from "../components/hhhhhhhhh"
 function Layout() {
 
   const [me, setMe] = useState(null);
@@ -19,7 +18,7 @@ function Layout() {
     WebApp.expand();
 
     const u = WebApp.initDataUnsafe?.user || null;
-    setTg(u?.id)  // u.id || 8574151650 || 5672285896
+    setTg(8574151650)  // u.id || 8574151650 || 5672285896
     if (!u) {
       // setModal({ type: "loader", message: "Iltimos telegram orqali oching" });
     } else {
@@ -32,7 +31,7 @@ function Layout() {
         userData?.data && setModal({ type: null, messege: "" })
 
         if (userData.data?.setle_phones?.length) {
-          const active = await getActiveNumbers(userData.data.setle_phones);
+          const active = await getActiveNumbers(userData.data.setle_phones);        
           setActiveNumbers(active || []);
         } else {
           console.log("Userda raqamlar mavjud emas");
@@ -52,8 +51,15 @@ function Layout() {
       return () => clearTimeout(timer);
     }
   }, [modal.type]);
+
+
+
+  console.log(activeNumbers);
+  
+
+
   return (
-    <>
+    <div className="mb-15">
       <Overlay modal={modal} />
       <nav className="my-8 mt-20">
         <h1>UzgramDevAbu</h1>
@@ -89,14 +95,14 @@ function Layout() {
         </div>}
 
       </header >
-      <main className="card mt-8">
+      <main className="card mt-8 ">
         {
           (me?.isActive && <Outlet context={{ me, activeNumbers, setModal, modal }} />) || <p className="text-center">Bu dasturdan active bo'lsangiz foydalana olasiz !</p>
         }
 
       </main>
       <footer className="fixed bottom-0 left-0 w-full bg-white text-center py-2 shadow-md">khudoyberduyev &copy;</footer>
-    </>
+    </div>
   );
 }
 

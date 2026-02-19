@@ -14,8 +14,14 @@ function Overlay({ modal }) {
     )}
     {/* NOTE */}
     {modal.type === "note" && (
-      <div className="absolute top-1/8 left-1/2 bg-white px-6 py-4 rounded-lg shadow text-center max-w-sm">
-        <p>{modal.message}</p>
+      <div className="fixed top-5 left-0 right-0 z-[100] flex justify-center px-4 pointer-events-none">
+        <div className="bg-black/90 backdrop-blur-md border-l-4 shadow-xl rounded-xl px-5 py-4 max-w-sm w-full flex items-start gap-4 pointer-events-auto animate-in slide-in-from-top duration-300">
+          <div className="flex-1">
+            <h4 className="text-sm text-white mt-0.5 line-clamp-2">
+              {modal.message}
+            </h4>
+          </div>
+        </div>
       </div>
     )}
   </>

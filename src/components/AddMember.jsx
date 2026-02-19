@@ -3,8 +3,9 @@ import { useOutletContext } from "react-router-dom";
 import { getGroupMembers } from "../Functions/forBackend.js"
 function AddMember() {
 
-  const { setModal, activeNumbers, modal } = useOutletContext();
+  const { setModal, activeNumbers, modal, me } = useOutletContext();
   const [activeraqamlar1, setActiveRaqamlar] = useState(activeNumbers?.data);
+  const [addedUser, setAddedUser] = useState([]);
 
   useEffect(() => {
     setActiveRaqamlar(activeNumbers?.data)
@@ -21,6 +22,8 @@ function AddMember() {
   const isolineRef = useRef(null);
   const indexRef = useRef(null);
   const numberRef = useRef(null);
+  const groupRef1 = useRef(null);
+  const perAccauntRef = useRef(null);
 
 
   // CAPTCHA STATE
@@ -46,12 +49,11 @@ function AddMember() {
       setModal({ type: null, message: "sdfhsdjfksdf" })
     }
     console.log("members ozgardi");
-    console.log(members);
     if (members?.step == 0) {
       if (members?.status != 200) {
         setModal({ type: "note", message: members.data?.message })
       } else {
-        setModal({type:"note",message:"Olingan kantaktlar: "+members.meta.returned+" ta"})
+        setModal({ type: "note", message: "Olingan kantaktlar: " + members.meta.returned + " ta" })
         setStep(1);
       }
     }
@@ -104,8 +106,17 @@ function AddMember() {
   async function handleSubmit2(e) {
     e.preventDefault();
 
-    // const code = codeRef.current?.value;
-    // const twoFa = twoFaRef.current?.value;
+    const group1 = groupRef1.current.value || "";
+    const perAccaunt = perAccauntRef.current.value || "";
+
+    setStep(2)
+    console.log("clicked");
+
+    // if (group1 && perAccaunt) {
+
+    // }
+
+
     // if (auth?.data?.step == 0) {
     //   try {
     //     setAuth2(await sendAuth(
@@ -135,26 +146,30 @@ function AddMember() {
     // newCaptcha();
   }
 
+  const filtered = members?.data
+    ? members.data.filter(e => e.user_name)
+    : [];
 
-
-
+  console.log(filtered);
   console.log(members);
+
+  console.log(me);
   
-  members?.data && members.data.map((elem) => {
-    console.log(elem)
-  })
+
 
   return (
     <>
-      <div className="flex w-85 overflow-x-hidden mx-auto mb-30">
+
+      <div className="flex w-85 overflow-x-hidden mx-auto">
         <div
           className={`flex w-255 transition-transform duration-300 ease-in-out
-      ${step === 0 ? "translate-x-0" : ""}
-      ${step === 1 ? "-translate-x-85" : ""}
-      ${step === 2 ? "-translate-x-170" : ""}
+      ${step == 0 ? "translate-x-0" : ""}
+      ${step == 1 ? "-translate-x-85" : ""}
+      ${step == 2 ? "-translate-x-170" : ""}
     `}
         >
           {/* ================= FORM 1 ================= */}
+
           <form onSubmit={handleSubmit1} className="bg-white shadow-md rounded-lg p-4 w-85 space-y-3">
             <h2 className="text-lg font-semibold">Telefon raqam</h2>
 
@@ -301,7 +316,7 @@ function AddMember() {
           </form>
 
           {/* ================= FORM 2 ================= */}
-          <div className="result bg-white shadow-lg rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
+          <div className="result bg-white rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
             {/* SUCCESS ICON */}
             <div className="w-16 h-16 flex items-center justify-center rounded-full bg-green-100">
               <svg
@@ -324,7 +339,7 @@ function AddMember() {
             <div>
               <label className="block text-left w-85 text-sm font-medium mb-1">Odam qo'shiladigan guruh linki</label>
               <input
-                // ref={groupRef}
+                ref={groupRef1}
                 title="Telegram guruh linki"
                 pattern="^(?:https?:\/\/)?t\.me\/[a-zA-Z0-9_]{5,32}\/?$"
                 type="text"
@@ -336,7 +351,7 @@ function AddMember() {
             <div>
               <label className="block text-left w-85 text-sm font-medium mb-1">Har bir nomerdan nechta odam qoshilsin? </label>
               <input
-                // ref={groupRef}
+                ref={perAccauntRef}
                 title="Telegram guruh linki"
                 type="number"
                 required
@@ -346,18 +361,44 @@ function AddMember() {
                 className="w-full border rounded-md px-3 py-2 outline-none"
               />
             </div>
-
-            {/* OPTIONAL BUTTON */}
             <button
-              onClick={newForm}
-              className="mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
+              onClick={() => { setStep(0); setMembers([]) }}
+              className="z-5 mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
+            >
+              Orqaga
+
+            </button>
+            <button
+              onClick={handleSubmit2}
+              className="z-5 mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
             >
               Qo'shishni boshlash
+
             </button>
-
-
+            <div className="z-0">
+              <h1 className="z-0 bold">{members?.data?.length} ta a'zo olindi</h1>
+              <ul>
+                {members?.data?.map((elem, index) => {
+                  return (<>
+                    <li className="z-0" key={index}>{elem.firstname}</li>
+                  </>)
+                })}
+              </ul>
+            </div>
           </div>
 
+          <div className="result bg-white rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
+            {/* SUCCESS ICON */}
+            {/* MESSAGE */}
+            <button
+              // onClick={}
+              className="mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
+            >
+              Qo'shishni toxtatish
+            </button>
+            <h2 className="text-lg font-semibold">A`zolar qoshilishi jarayoni !
+            </h2>
+          </div>
 
         </div>
       </div>

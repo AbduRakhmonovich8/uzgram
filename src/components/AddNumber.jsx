@@ -144,7 +144,7 @@ function AddNumber() {
     `}
         >
           {/* ================= FORM 1 ================= */}
-          <form onSubmit={handleSubmit1} className="bg-white shadow-md rounded-lg p-4 w-85 space-y-3">
+          <form onSubmit={handleSubmit1} className="bg-white rounded-lg p-4 w-85 space-y-3">
             <h2 className="text-lg font-semibold">Telefon raqam</h2>
 
             <div>
@@ -191,7 +191,7 @@ function AddNumber() {
           </form>
 
           {/* ================= FORM 2 ================= */}
-          <form onSubmit={handleSubmit2} className="bg-white shadow-md rounded-lg p-4 w-85 space-y-3">
+          <form onSubmit={handleSubmit2} className="bg-white rounded-lg p-4 w-85 space-y-3">
             <h2 className="text-center text-lg font-semibold">Tasdiqlash kodi {phone} raqamga jo'natildi</h2>
 
             <div>
