@@ -103,7 +103,7 @@ function AddMember() {
 
 
   // 2-FORM SUBMIT (CODE + 2FA)
-  const sleep = (ms) => new Promise(res => setTimeout(res, ms));
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   async function handleSubmit2(e) {
     e.preventDefault();
@@ -114,7 +114,7 @@ function AddMember() {
     if (!members?.data?.length) return;
     if (!activeCurrentNumbers?.length) return;
 
-    const baseDelay = activeCurrentNumbers.length > 1 ? 3000 : 6000;
+    const baseDelay = activeCurrentNumbers.length > 1 ? 4000 : 8000;
 
     setStep(2);
 
@@ -136,34 +136,13 @@ function AddMember() {
         value.user_name
       );
 
-      // faqat qo‘shilgan bo‘lsa counted bo‘ladi (backend added=true/false)
       setAddedUser(prev => [...prev, answare]);
+      setModal({ type: "note", message: `${answare.name}: ${answare.message}` });
 
-      setModal({ type: "note", message: `${answare.name}: ${answare.message}`})
-      // FloodWait bo‘lsa — shuni kutamiz
-      if (answare?.reason === "flood_wait" && answare?.wait_seconds) {
-        await sleep((answare.wait_seconds + 2) * 10000);
-        continue;
-      }
-
+      // ✅ haqiqiy kutish
       await sleep(baseDelay);
     }
   }
-  console.log(addedUser);
-
-
-  // const filtered = members?.data
-  //   ? members.data.filter(e => e.user_name)
-  //   : [];
-
-  // console.log(filtered);
-  // console.log(members);
-  // console.log(me);
-  // console.log(activeCurrentNumbers);
-
-
-
-
 
 
   return (
@@ -179,11 +158,11 @@ function AddMember() {
         >
           {/* ================= FORM 1 ================= */}
 
-          <form onSubmit={handleSubmit1} className="bg-white shadow-md rounded-lg p-4 w-85 space-y-3">
-            <h2 className="text-lg font-semibold">Telefon raqam</h2>
+          <form onSubmit={handleSubmit1} className="shadow-md rounded-lg p-4 w-85 space-y-3">
+            <h2 className="text-lg text-white font-semibold">Telefon raqam</h2>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Odam olinadigan guruh linki</label>
+              <label className="block text-white text-sm text-white font-medium mb-1">Odam olinadigan guruh linki</label>
               <input
                 ref={groupRef}
                 title="Telegram guruh linki"
@@ -191,13 +170,13 @@ function AddMember() {
                 type="text"
                 required
                 placeholder="https://t.me/name"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white border-white text-white border rounded-md px-3 py-2 outline-none"
               />
             </div>
 
             {/* ===== GENDER ===== */}
             <div className="flex gap-4">
-              <label>
+              <label className="text-white">
                 <input
                   className="mr-1"
                   type="radio"
@@ -209,7 +188,7 @@ function AddMember() {
                 Erkak
               </label>
 
-              <label>
+              <label className="text-white">
                 <input
                   className="mr-1"
 
@@ -222,7 +201,7 @@ function AddMember() {
                 Ayol
               </label>
 
-              <label>
+              <label className="text-white">
                 <input
                   className="mr-1"
 
@@ -238,12 +217,12 @@ function AddMember() {
 
             {/* ===== ONLINE / OFFLINE / ALL ===== */}
             <div>
-              <label className="block text-sm font-medium mt-5 mb-1">Hozirgi holatini tanlang:</label>
+              <label className="block text-white text-sm font-medium mt-5 mb-1">Hozirgi holatini tanlang:</label>
               <select
                 ref={isolineRef}
                 required
                 defaultValue="all"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white border rounded-md px-3 py-2 outline-none"
               >
                 <option value="aralash">Aralash</option>
                 <option value="online">Online</option>
@@ -253,20 +232,20 @@ function AddMember() {
 
             {/* ===== INDEX (PAGINATION) ===== */}
             <div>
-              <label className="block text-sm font-medium mt-5 mb-1">Qaysi oraliqdan olinadi (index):</label>
+              <label className="block text-white text-sm font-medium mt-5 mb-1">Qaysi oraliqdan olinadi (index):</label>
               <select
                 ref={indexRef}
                 required
                 defaultValue="1"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white backga border rounded-md px-3 py-2 outline-none"
               >
-                <option value="1">1 – 100</option>
-                <option value="2">101 – 200</option>
-                <option value="3">201 – 300</option>
-                <option value="4">301 – 400</option>
-                <option value="5">401 – 500</option>
+                <option className="text-black" value="1">1 – 100</option>
+                <option className="text-black" value="2">101 – 200</option>
+                <option className="text-black" value="3">201 – 300</option>
+                <option className="text-black" value="4">301 – 400</option>
+                <option className="text-black" value="5">401 – 500</option>
               </select>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-white text-gray-500 mt-1">
                 Index = page. Masalan 2 tanlansa 1000 dan keyingi 1000 ta user olinadi.
               </p>
             </div>
@@ -274,14 +253,14 @@ function AddMember() {
 
             {activeraqamlar1 && (
               <div>
-                <label className="block text-sm font-medium mt-5 mb-1">
+                <label className="block text-white text-sm font-medium mt-5 mb-1">
                   Odam olishda ishlatadigan akkaunt raqamni tanlang:
                 </label>
 
                 <select
                   ref={numberRef}
                   required
-                  className="w-full border rounded-md px-3 py-2 outline-none"
+                  className="w-full text-white border rounded-md px-3 py-2 outline-none"
                 >
                   {activeraqamlar1.map((opt, index) =>
                     opt.status === "active" ? (
@@ -296,7 +275,7 @@ function AddMember() {
 
             {/* ===== CAPTCHA ===== */}
             <div>
-              <label className="block text-sm font-medium mt-5 mb-1">Captcha</label>
+              <label className="block text-white text-sm font-medium mt-5 mb-1">Captcha</label>
 
               <div className="flex items-center gap-2">
                 <div className="px-3 py-2 bg-gray-200 rounded font-mono">
@@ -313,19 +292,19 @@ function AddMember() {
                 value={capAns}
                 onChange={(e) => setCapAns(e.target.value)}
                 placeholder="Javob"
-                className="mt-2 w-full border rounded-md px-3 py-2 outline-none "
+                className="mt-2 w-full text-white border rounded-md px-3 py-2 outline-none "
                 required
               />
               {capErr && <p className="text-red-500 text-sm mt-1">{capErr}</p>}
             </div>
 
-            <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded-md">
-              Kod yuborish
+            <button type="submit" className="w-full text-white bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded-md">
+              Odamlarni olish
             </button>
           </form>
 
           {/* ================= FORM 2 ================= */}
-          <div className="result bg-white rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
+          <div className="result rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
             {/* SUCCESS ICON */}
             <div className="w-16 h-16 flex items-center justify-center rounded-full bg-green-100">
               <svg
@@ -342,12 +321,12 @@ function AddMember() {
                 />
               </svg>
             </div>
-            <h2 className="text-lg font-semibold">A`zolar muvofaqiyatli olindi</h2>
+            <h2 className="text-lg text-white font-semibold">A`zolar muvofaqiyatli olindi</h2>
             <p>{activeCurrentNumbers?.length * 45} tagacha a'zo qoshishingiz mumkin !</p>
 
             {/* MESSAGE */}
             <div>
-              <label className="block text-left w-85 text-sm font-medium mb-1">Odam qo'shiladigan guruh linki</label>
+              <label className="block text-white text-left w-85 text-sm text-white font-medium mb-1">Odam qo'shiladigan guruh linki</label>
               <input
                 ref={groupRef1}
                 title="Telegram guruh linki"
@@ -355,11 +334,11 @@ function AddMember() {
                 type="text"
                 required
                 placeholder="https://t.me/name"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white border rounded-md px-3 py-2 outline-none"
               />
             </div>
             <div>
-              <label className="block text-left w-85 text-sm font-medium mb-1">Har bir nomerdan nechta odam qoshilsin? </label>
+              <label className="block text-white text-left w-85 text-sm text-white font-medium mb-1">Har bir nomerdan nechta odam qoshilsin? </label>
               <input
                 ref={perAccauntRef}
                 title="Telegram guruh linki"
@@ -368,7 +347,7 @@ function AddMember() {
                 max={activeCurrentNumbers.length * 45}
                 min={1}
                 placeholder={"1 < x < " + activeCurrentNumbers.length * 45}
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white border rounded-md px-3 py-2 outline-none"
               />
             </div>
             <button
@@ -376,38 +355,41 @@ function AddMember() {
               className="z-5 mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
             >
               Orqaga
-
             </button>
             <button
               onClick={handleSubmit2}
               className="z-5 mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
             >
               Qo'shishni boshlash
-
             </button>
-            <div className="z-0">
+            <div className="overflow-hidden">
               <h1 className="z-0 bold">{members?.data?.length} ta a'zo olindi</h1>
               <ul>
                 {members?.data?.map((elem, index) => {
                   return (<>
-                    <li className="z-0" key={index}>{elem.firstname}</li>
+                    <li className="text-white" key={index}> {elem.firstname.length > 15 ? elem.firstname.slice(0, 15) + "..." : elem.firstname}</li>
                   </>)
                 })}
               </ul>
             </div>
           </div>
 
-          <div className="result bg-white rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
+          <div className="result  rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
             {/* SUCCESS ICON */}
             {/* MESSAGE */}
             <button
-              // onClick={}
+              onClick={() => { setMembers([]); setStep(0); setAddedUser([]) }}
               className="mt-3 px-5 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition"
             >
               Qo'shishni toxtatish
             </button>
-            <h2 className="text-lg font-semibold">A`zolar qoshilishi jarayoni !
+            <h2 className="text-lg text-white font-semibold">A`zolar qoshilishi jarayoni !
             </h2>
+            <div className="overflow-hidden">
+              {addedUser && addedUser.map((e) => {
+                return <p className="text-white"> {e.name.length > 15 ? e.name.slice(0, 15) + "..." : e.name}: {e.message}</p>
+              })}
+            </div>
           </div>
 
         </div>

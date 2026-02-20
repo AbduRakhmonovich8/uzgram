@@ -1,9 +1,9 @@
 import "./App.css";
 import AddNumber from "./components/AddNumber.jsx";
 import AddMember from "./components/AddMember.jsx";
-import {Layout} from "./Layouts/Layout.jsx";
+import { Layout } from "./Layouts/Layout.jsx";
 import ErrorPage from "./components/ErrorPage.jsx";
-
+import MatrixBackground from "./components/matrix.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 function App() {
   const rout = createBrowserRouter([
@@ -12,7 +12,7 @@ function App() {
       element: <Layout />,
       errorElement: <ErrorPage />,
       children: [
-             {
+        {
           path: "Raqam_Qoshish",
           element: <AddNumber />
         },
@@ -25,9 +25,12 @@ function App() {
     },
   ]);
   return (
-    <div className="App">
-      <RouterProvider router={rout} />
-    </div>
+    <>
+      <MatrixBackground timeout={50} />
+      <div className="App">
+        <RouterProvider router={rout} />
+      </div>
+    </>
   );
 }
 

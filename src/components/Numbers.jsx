@@ -25,20 +25,20 @@ function Numbers({ activeNumbers, me, setActiveNumbers, setModal }) {
   };
   return (
     <div className='card' style={{ textAlign: "center" }}>
-      <h2>Faol raqamlar ro'yxati:</h2>
+      <h2 className="text-white">Faol raqamlar ro'yxati:</h2>
       {activeNumbers && activeNumbers.data?.map((number, index) => (
         <div key={index} >
-          {number.number}
-          {number.status === "active" ? (
-            "✅"
-          ) : (
-            <>
-              ❌ <button onClick={() => handleDelete(number.number)}>Delete</button>
-            </>
-          )}
+          <p className="text-white">{number.number}
+            {number.status === "active" ? (
+              "✅"
+            ) : (
+              <>
+                ❌ <button className="button" onClick={() => handleDelete(number.number)}>Delete</button>
+              </>
+            )}</p>
 
         </div>
-      )) || <div>Sizda ulangan raqamlar mavjud emas ❌</div>
+      )) || <div className="text-white">Sizda ulangan raqamlar mavjud emas ❌</div>
       }
     </div>
   );

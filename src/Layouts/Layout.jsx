@@ -12,17 +12,18 @@ function Layout() {
   const [tg, setTg] = useState("")
   const [modal, setModal] = useState({ type: "loader", messege: "" }) //node loader overlay
 
-
-  useEffect(() => {
+  const initallization = async () => {
     WebApp.ready();      // 🔑 muhim
     WebApp.expand();
-
-    const u = WebApp.initDataUnsafe?.user || null;
-    setTg(u.id)  // u.id || 8574151650 || 5672285896
+    const u = async () => {
+      return await WebApp.initDataUnsafe?.user || null
+    }
+    setTg(await u?.id)  // u.id || 8574151650 || 5672285896
     if (!u) {
       // setModal({ type: "loader", message: "Iltimos telegram orqali oching" });
     } else {
       console.log("Logged in (Telegram WebApp)");
+      setModal({ type: "note", message: "Bu telegram ilovada ochilsin !" })
     }
     (async () => {
       try {
@@ -41,7 +42,13 @@ function Layout() {
         setModal({ type: "note", message: "Server bilan bog‘lanishda xatolik" });
       }
     })();
+  }
+
+  useEffect(() => {
+    initallization()
   }, [tg]);
+
+
   useEffect(() => {
     if (modal.type === "note") {
       const timer = setTimeout(() => {
@@ -62,7 +69,7 @@ function Layout() {
     <div className="mb-15">
       <Overlay modal={modal} />
       <nav className="my-8 mt-20">
-        <h1>UzgramDevAbu</h1>
+        <h1 >UzgramDevAbu</h1>
         <div><p>{me?.username}</p><p className="number">{me?.number}</p></div><div style={{ backgroundColor: me?.isActive ? "green" : "red", width: "20px", height: "20px", borderRadius: "50%" }}></div>
       </nav>
       <header>
@@ -70,8 +77,8 @@ function Layout() {
         {/* USER FAOL EMAS */}
         <BreadCrumpos />{(me && !me.isActive || !me?.number) && (
           <div className="card" style={{ textAlign: "center" }}>
-            {me?.isActive || "🔒 Siz admin tomonidan faollashtirilishingiz kerak " + me?.username}
-            {Boolean(me?.number) || "📵 Telefon raqamingiz botda mavjud emas"}
+            <p className="text-white">{me?.isActive || "🔒 Siz admin tomonidan faollashtirilishingiz kerak " + me?.username}</p>
+            <p className="text-white">{Boolean(me?.number) || "📵 Telefon raqamingiz botda mavjud emas"}</p>
           </div>
         )}
         {/* USER FAOL */}
@@ -97,11 +104,11 @@ function Layout() {
       </header >
       <main className="card mt-8 ">
         {
-          (me?.isActive && <Outlet context={{ me, activeNumbers, setModal, modal }} />) || <p className="text-center">Bu dasturdan active bo'lsangiz foydalana olasiz !</p>
+          (me?.isActive && <Outlet context={{ me, activeNumbers, setModal, modal }} />) || <p className="text-white text-center">Bu dasturdan active bo'lsangiz foydalana olasiz !</p>
         }
 
       </main>
-      <footer className="fixed bottom-0 left-0 w-full bg-white text-center py-2 shadow-md">khudoyberduyev &copy;</footer>
+      <footer className="fixed bottom-0 left-0 w-full bg-blackc text-white text-center py-2 shadow-md">khudoyberdiyev &copy;</footer>
     </div>
   );
 }
