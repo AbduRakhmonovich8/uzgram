@@ -20,6 +20,8 @@ function Layout() {
     }
     u = await WebApp.initDataUnsafe?.user || null
     setTg(await u?.id)  //await u?.id  || 8574151650 || 5672285896
+    // setTg(5672285896)  //await u?.id  || 8574151650 || 5672285896
+    // alert("go")
     if (await !u) {
       // setModal({ type: "loader", message: "Iltimos telegram orqali oching" });
     } else {
@@ -61,11 +63,6 @@ function Layout() {
   }, [modal.type]);
 
 
-
-  console.log(activeNumbers);
-
-
-
   return (
     <div className="mb-15">
       <Overlay modal={modal} />
@@ -86,6 +83,7 @@ function Layout() {
         {me && me.isActive && me?.number && (
           <Numbers activeNumbers={activeNumbers} setActiveNumbers={setActiveNumbers} me={me} setModal={setModal} />
         )}
+        <button onClick={initallization} className="w-full bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 rounded-md mb-6">Yangilash</button>
         {!me?.isActive || <div className="flex rounded-lg overflow-hidden w-75 mx-auto mb-4">
           <NavLink
             to={"/Raqam_Qoshish"}
