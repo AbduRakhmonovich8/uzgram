@@ -15,11 +15,12 @@ function Layout() {
   const initallization = async () => {
     WebApp.ready();      // 🔑 muhim
     WebApp.expand();
-    const u = async () => {
+    let u = async () => {
       return await WebApp.initDataUnsafe?.user || null
     }
-    setTg(await u?.id)  // u.id || 8574151650 || 5672285896
-    if (!u) {
+    u = await WebApp.initDataUnsafe?.user || null
+    setTg(await u?.id)  //await u?.id  || 8574151650 || 5672285896
+    if (await !u) {
       // setModal({ type: "loader", message: "Iltimos telegram orqali oching" });
     } else {
       console.log("Logged in (Telegram WebApp)");
